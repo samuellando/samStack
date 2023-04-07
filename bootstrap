@@ -1,0 +1,74 @@
+#!/bin/sh
+if [[ $# -ne 1  ]]; then
+  echo "Please pass project name"
+  exit -1
+fi
+
+wd=$(pwd)
+
+cd ~/Documents/projects/samStack
+
+echo "###### Createing Svelte app ######"
+node svelte.js $1
+
+echo "###### Moving project folder ######"
+mv $1 $wd/
+
+echo "###### Copying additional files ######"
+cp -r files/. $wd/$1
+
+echo "###### Swapping default page ######"
+rm $wd/$1/src/routes/+page.svelte
+cp +page.svelte $wd/$1/src/routes/
+cp +layout.ts $wd/$1/src/routes/
+cp BootstrapComponent.svelte $wd/$1/src/routes/
+
+cd $wd/$1
+
+echo "###### Swapping placeholders ######" 
+o='s/\[PROJECT_ID\]/'
+t='/g'
+sed -i "$o$1$t" main.py
+sed -i "$o$1$t" runlocal.sh
+
+echo "###### Installing node dependencies ######"
+npm install 
+npm install @sveltejs/adapter-static
+
+echo "###### Setting up python virtual environment ######"
+python -m venv venv
+
+echo "###### Installing python dependencies ######"
+source venv/bin/activate
+pip install -r requirements.txt
+
+echo "###### Initializing git repo ######"
+git init
+git add .
+git commit -am "Initial commit"
+
+echo "###### Creating cloud skeleton project ######"
+# terraform
+#  - Firestore, sample document, service account with firebase access.
+#  - Get the service account key...
+
+echo "###### DONE ######"
+cat << EOF
+
+
+
+ - bootstrap conplete.
+ - To run frontened in dev mode:
+   - npm run dev
+ - To run backend in dev mode: 
+   - source venv/bin/activate
+   - python main.py
+ - To run both in dev mode:
+   - ./rundev.sh
+ - To run build locally (in docker): 
+   - ./runlocal.sh
+ - To deploy:
+   - gcloud config set project $1
+   - gcloud run deploy
+ - I recommend you set up a cloud build automation with cloud build.
+EOF
