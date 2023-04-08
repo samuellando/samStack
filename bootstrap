@@ -21,7 +21,6 @@ echo "###### Swapping default page ######"
 rm $wd/$1/src/routes/+page.svelte
 cp +page.svelte $wd/$1/src/routes/
 cp +layout.ts $wd/$1/src/routes/
-cp BootstrapComponent.svelte $wd/$1/src/routes/
 
 cd $wd/$1
 

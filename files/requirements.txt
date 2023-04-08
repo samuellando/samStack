@@ -2,3 +2,4 @@ gunicorn
 flask
 flask-cors
 firebase-admin
+git+https://github.com/samuellando/anyREST
