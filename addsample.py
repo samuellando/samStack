@@ -13,4 +13,4 @@ project = sys.argv[1]
 firebase_app = firebase_admin.initialize_app(options={'projectId': project})
 db = firestore.client()
 
-anyrest.insert_data_into_firestore({"message": "Hello, World!"}, db.collection("helloworld").document("samplecollection"))
+anyrest.insert_data_into_firestore({"message": "Hello, World!"}, db.collection("helloworld").document("sampledocument"))
