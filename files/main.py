@@ -8,11 +8,12 @@ import anyrest
 import os
 os.environ['GRPC_DNS_RESOLVER'] = 'native'
 
-firebase_app = firebase_admin.initialize_app(options={'projectId': "[PROJECT_ID]"})
+firebase_app = firebase_admin.initialize_app(options={'projectId': '[PROJECT_ID]'})
 db = firestore.client()
 
 app = Flask(__name__)
-anyrest.addAnyrestHandlers(app, db)
+ar = anyrest.addAnyrestHandlers(app, db)
+#ar = anyrest.addAnyrestHandlers(app, db, "[DOMAIN]", "[IDENTIFIER]")
 
 @app.route('/')
 def index():

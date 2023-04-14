@@ -2,4 +2,4 @@
 
 source venv/bin/activate
 python main.py &
-npm run dev &
+npm run dev
