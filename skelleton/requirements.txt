@@ -1,0 +1,5 @@
+gunicorn
+flask
+flask-cors
+pymongo
+git+https://github.com/samuellando/anyREST

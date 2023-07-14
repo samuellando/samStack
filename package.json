@@ -1,6 +1,0 @@
-{
-  "type": "module",
-  "dependencies": {
-    "create-svelte": "^3.3.0"
-  }
-}
