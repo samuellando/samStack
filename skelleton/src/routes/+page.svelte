@@ -13,6 +13,7 @@
 	};
 
 	var loading = true;
+	var backend = true;
 
     let apiUrl: string;
     let apiClient: BaseClient;
@@ -25,7 +26,16 @@
 		}
 		//authDef = await auth();
         apiClient = new BaseClient(apiUrl);
-        await apiClient.post('example/example', { message: 'Hello, World! ... From the backend' });
+        try {
+            await apiClient.post('example/example', { message: 'Hello, World! ... From the backend' });
+        } catch (error) {
+            try {
+                await apiClient.put('example/example', { message: 'Hello, World! ... From the backend' });
+            } catch (error) {
+                console.log(error);
+                backend = false;
+            }
+        }
 		loading = false;
 	});
 
@@ -42,6 +52,14 @@
     <Auth {authDef} />
 
     <h1>Wellcome to the SamStack</h1>
-    <p>{apiClient.get("example/example")["message"]}</p>
+    {#if backend}
+        {#await apiClient.get("example/example")}
+            <p>Waiting for backend...</p>
+        {:then response}
+            <p>{response["message"]}</p>
+        {:catch error}
+            <p>Backend error: {error.message}</p>
+        {/await}
+    {/if}
 {/if}
 

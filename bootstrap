@@ -1,0 +1,16 @@
+#!/bin/sh
+
+if [ $# -ne 1 ]; then
+    echo "Usage: $0 location"
+    exit 1
+fi  
+
+mkdir -p $1
+cp -r ./skelleton/. $1
+
+cd $1
+npm install
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+deactivate
